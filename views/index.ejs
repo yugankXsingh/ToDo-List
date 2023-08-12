@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-Do List</title>
+    <link rel=" stylesheet" href="style/styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="Today-info">
+            <% const weekday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; %>
+                <% const months=["January", "February" , "March" , "April" , "May" , "June" , "July" , "August"
+                    , "September" , "October" , "November" , "December" ]; %>
+                    <% const d=new Date();%>
+                        <% let day=weekday[d.getDay()];%>
+                            <% let year=d.getFullYear(); %>
+                                <h1>
+                                    <%=day%>, <%=months[d.getMonth()] %>
+                                            <%=d.getDate()%>
+                                                <%= year %>
+                                </h1>
+                                <h3 class="time">
+                                    <%if(d.getHours() < 12){%>
+                                        <%=d.getHours()%>
+                                            <%}else{%>
+                                                <%=Math.abs((d.getHours() - 12)) %>
+                                                    <%}%>
+                                                        :
+                                                        <%=d.getMinutes() %>
+                                                            <%if(d.getHours()> 12){%>
+                                                                PM
+                                                                <%}else{%>
+                                                                    AM
+                                                                    <%}%>
+                                                                        <%if(d.getHours()>= 5 && d.getHours() <= 18){%>
+                                                                                🌞
+                                                                                <%}else{%>
+                                                                                    🌙
+                                                                                    <%}%>
+                                </h3>
+
+                                <h1 class="advice">Hey it's <%= dayType %>
+                                        <%= advice %>
+                                </h1>
+        </div>
+
+
+        <div class="Todo-APP">
+            <h2>To-Do APP <img src="style/images/task-list-2.png" alt=""></h2>
+            <div>
+                <form action="/addTask" method="post">
+                    <input type="text" name="NewTask" placeholder="What you gonna do next?" autocomplete="off">
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+            <ul id="Task-List">
+                <%if(locals.Tasks){%>
+                    <% if(Tasks.length !==0){%>
+                        <%for(let i=0; i<Tasks.length; i++){%>
+
+                            <% if(i%2==0){%>
+                                <li class="even-Task">
+                                    <%= Tasks[i] %>
+                                        <form action="/completed" method="post" class="complete-button-form">
+                                            <button class="close" name="doneTask" value="<%=Tasks[i]%>"
+                                                type="submit">Done</button>
+                                        </form>
+                                </li>
+                                <%}else{%>
+                                    <li class="odd-Task">
+                                        <%= Tasks[i] %>
+                                            <form action="/completed" method="post" class="complete-button-form">
+                                                <button class="close" name="doneTask" value="<%=Tasks[i]%>"
+                                                    type="submit">Done</button>
+                                            </form>
+                                    </li>
+                                    <%}%>
+
+
+                                        <%}%>
+                                            <% }%>
+                                                <%}%>
+
+            </ul>
+            <div class="completed-Tasks">
+                <h2>Completed Tasks <img src="style/images/check-mark.png"></h2>
+                <ul>
+                    <%if(locals.completedTasks){%>
+                        <%for(var i=0; i<completedTasks.length; i++){%>
+                            <li class="completed">
+                                <%=completedTasks[i]%>
+                            </li>
+                            <%}%>
+                                <%}%>
+                </ul>
+
+            </div>
+            <div class="reset-div">
+                <form action="/resetList" method="post" class="reset-button-form">
+                    <button class="reset-button" type="submit">Reset List</button>
+                </form>
+            </div>
+        </div>
+        <%- include("partials/footer.ejs") %>
+    </div>
+
+</body>
+
+</html>
