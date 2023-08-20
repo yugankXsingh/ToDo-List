@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TO-Do List</title>
     <link rel=" stylesheet" href="style/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500&family=Great+Vibes&family=Montserrat:wght@100;400;500&family=Open+Sans:wght@300;400;500&family=Roboto:wght@100;400;500&family=Sacramento&family=Satisfy&family=Slabo+27px&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
@@ -28,18 +33,22 @@
                                             <%}else{%>
                                                 <%=Math.abs((d.getHours() - 12)) %>
                                                     <%}%>
-                                                        :
-                                                        <%=d.getMinutes() %>
-                                                            <%if(d.getHours()> 12){%>
-                                                                PM
+                                                        :<%if(d.getMinutes() < 10){%>
+                                                            0<%=d.getMinutes()%>
                                                                 <%}else{%>
-                                                                    AM
-                                                                    <%}%>
-                                                                        <%if(d.getHours()>= 5 && d.getHours() <= 18){%>
-                                                                                🌞
+                                                                    <%=d.getMinutes() %>
+                                                                        <%}%>
+                                                                            <%if(d.getHours()> 12){%>
+                                                                                PM
                                                                                 <%}else{%>
-                                                                                    🌙
+                                                                                    AM
                                                                                     <%}%>
+                                                                                        <%if(d.getHours()>= 5 &&
+                                                                                            d.getHours() <= 18){%>
+                                                                                                🌞
+                                                                                                <%}else{%>
+                                                                                                    🌙
+                                                                                                    <%}%>
                                 </h3>
 
                                 <h1 class="advice">Hey it's <%= dayType %>
@@ -56,54 +65,113 @@
                     <button type="submit">Add</button>
                 </form>
             </div>
-            <ul id="Task-List">
-                <%if(locals.Tasks){%>
-                    <% if(Tasks.length !==0){%>
-                        <%for(let i=0; i<Tasks.length; i++){%>
-
-                            <% if(i%2==0){%>
-                                <li class="even-Task">
-                                    <%= Tasks[i] %>
-                                        <form action="/completed" method="post" class="complete-button-form">
-                                            <button class="close" name="doneTask" value="<%=Tasks[i]%>"
-                                                type="submit">Done</button>
-                                        </form>
-                                </li>
-                                <%}else{%>
-                                    <li class="odd-Task">
-                                        <%= Tasks[i] %>
-                                            <form action="/completed" method="post" class="complete-button-form">
-                                                <button class="close" name="doneTask" value="<%=Tasks[i]%>"
-                                                    type="submit">Done</button>
-                                            </form>
-                                    </li>
-                                    <%}%>
 
 
-                                        <%}%>
-                                            <% }%>
-                                                <%}%>
-
-            </ul>
-            <div class="completed-Tasks">
-                <h2>Completed Tasks <img src="style/images/check-mark.png"></h2>
-                <ul>
-                    <%if(locals.completedTasks){%>
-                        <%for(var i=0; i<completedTasks.length; i++){%>
-                            <li class="completed">
-                                <%=completedTasks[i]%>
-                            </li>
-                            <%}%>
-                                <%}%>
-                </ul>
-
-            </div>
-            <div class="reset-div">
-                <form action="/resetList" method="post" class="reset-button-form">
-                    <button class="reset-button" type="submit">Reset List</button>
+            <div class="activity">
+                <h2>Let's find something for you to do ✌️</h2>
+                <form action="/" id="form" class="form" method="POST" class="activity-form">
+                    <select name="type" class="form-select">
+                        <option value="" data-display="Select">Random type</option>
+                        <option value="education">Education</option>
+                        <option value="charity">Charity</option>
+                        <option value="recreational">Recreational</option>
+                        <option value="relaxation">Relaxation</option>
+                        <option value="busywork">Busywork</option>
+                        <option value="social">Social</option>
+                        <option value="diy">DIY</option>
+                        <option value="music">Music</option>
+                    </select>
+                    <select name="participants" class="form-select">
+                        <option value="">Any number of people</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <button type="submit" class="form-submit">Go</button>
                 </form>
+                <div class="random-Activty">
+                    <p>
+                        <% if(error.length !==0){%>
+                            <%=error[0]%>
+                                <%}else{%>
+                                    <%if(locals.somethingToDo){%>
+                                        <%=somethingToDo.activity%>
+                                            <%}%>
+                                                <%}%>
+                    </p>
+                </div>
             </div>
+            <%if(TaskCount===0){%>
+                <div class="complement">
+                    <h4>Awesome! You are done for today.🎉</h4>
+                </div>
+                <%}else{%>
+                    <ul id="Task-List">
+                        <%if(locals.Tasks){%>
+                            <% if(Tasks.length !==0){%>
+                                <%for(let i=0; i<Tasks.length; i++){%>
+
+                                    <% if(i%2==0){%>
+                                        <li class="even-Task">
+                                            <%= Tasks[i] %>
+                                                <form action="/completed" method="post" class="complete-button-form">
+                                                    <button class="close" name="doneTask" value="<%=Tasks[i]%>"
+                                                        type="submit">Done</button>
+                                                </form>
+                                        </li>
+                                        <%}else{%>
+                                            <li class="odd-Task">
+                                                <%= Tasks[i] %>
+                                                    <form action="/completed" method="post"
+                                                        class="complete-button-form">
+                                                        <button class="close" name="doneTask" value="<%=Tasks[i]%>"
+                                                            type="submit">Done</button>
+                                                    </form>
+                                            </li>
+                                            <%}%>
+
+
+                                                <%}%>
+                                                    <% }%>
+                                                        <%}%>
+
+                    </ul>
+
+                    <%}%>
+                        <div class="completed-Tasks">
+                            <h2>Completed Tasks <img src="style/images/check-mark.png"></h2>
+                            <ul>
+                                <%if(locals.completedTasks.length !==0){%>
+                                    <%for(var i=0; i<completedTasks.length; i++){%>
+                                        <li class="completed">
+                                            <%=completedTasks[i]%>
+                                        </li>
+                                        <%}%>
+                                            <%}else{%>
+                                                <p class="noneTask">None of the tasks are attempted yet !</p>
+                                                <%}%>
+                            </ul>
+
+                        </div>
+                        <div class="reset-div">
+                            <form action="/resetList" method="post" class="reset-button-form">
+                                <button class="reset-button" type="submit">Reset List</button>
+                            </form>
+                        </div>
         </div>
+
+        <div class="dashboard">
+            <h2>Dashboard</h1>
+
+                <h3 class="TaskCount">Tasks Remaining : <%=TaskCount%>
+                </h3>
+                <h3>Tasks Attempted : <%=completedTasks.length%>
+                </h3>
+
+        </div>
+
+
         <%- include("partials/footer.ejs") %>
     </div>
 
