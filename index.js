@@ -52,8 +52,8 @@ var completedTaskList = [];
 
 
 app.get("/", (req, res) => {
-    // console.log(TaskList);
-    console.log(errorMessage.length);
+    // console.log(TaskList.length);
+    // console.log(errorMessage.length);
     res.render("index.ejs", {
         Tasks: TaskList.reverse(),
         completedTasks: completedTaskList,
