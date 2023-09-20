@@ -15,7 +15,12 @@
 
 <body>
     <div class="container">
-        <div class="Today-info">
+
+        <%if(locals.animate === true){%>
+        <div class="Today-info slideDown">
+        <%}else{%>
+            <div class="Today-info">
+        <%}%>
             <% const weekday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]; %>
                 <% const months=["January", "February" , "March" , "April" , "May" , "June" , "July" , "August"
                     , "September" , "October" , "November" , "December" ]; %>
@@ -57,8 +62,12 @@
                                 </h1>
         </div>
 
-
-        <div class="Todo-APP">
+       <% if(locals.animate === true){%>
+            <div class="Todo-APP slidein">
+        <%}else{%>
+            <div class="Todo-APP">
+       <% }%>
+        
             <h2>To-Do APP <img src="style/images/task-list-2.png" alt=""></h2>
             <div>
                 <form action="/addTask" method="post">

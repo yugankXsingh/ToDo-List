@@ -16,6 +16,8 @@ const day = d.getDay();
 var today = "";
 var advice = "";
 
+let addAnimation = true;
+
 if (day === 6 || day === 0) {
     today = "the weekend";
     advice = "it's time to fun!"
@@ -61,6 +63,7 @@ app.get("/", (req, res) => {
         advice: advice,
         TaskCount: Count,
         somethingToDo: newActivity,
+        animate: addAnimation,
         error: errorMessage
     })
 });
@@ -70,6 +73,7 @@ app.post("/addTask", (req, res) => {
 
     if (UserInputTask.length !== 0 && UserInputTask[0] !== ' ') {
         TaskList.push(UserInputTask);
+        animate = false;
         Count++;
     }
 
@@ -87,6 +91,7 @@ app.post("/completed", (req, res) => {
     let doneTaskIndex = TaskList.indexOf(doneTask);
     // remove this doneTask from TaskList array
     TaskList.splice(doneTaskIndex, 1);
+    addAnimation = false;
     TaskList.reverse();
     Count--;
 
@@ -99,6 +104,7 @@ app.post("/resetList", (req, res) => {
     Count = 3;
     errorMessage = [];
     newActivity = "";
+    addAnimation = true;
     res.redirect("/");
 })
 
