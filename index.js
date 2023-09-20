@@ -73,7 +73,7 @@ app.post("/addTask", (req, res) => {
 
     if (UserInputTask.length !== 0 && UserInputTask[0] !== ' ') {
         TaskList.push(UserInputTask);
-        animate = false;
+        addAnimation = false;
         Count++;
     }
 
